@@ -1,11 +1,11 @@
+//const ENV = require('dotenv').config().parsed
+const enviromentConfiguration = require('./src/utils/environmentConfig.js')
 /*
  * This file runs in a Node context (it's NOT transpiled by Babel), so use only
  * the ES6 features that are supported by your Node version. https://node.green/
  */
-
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli/quasar-conf-js
-
 const { configure } = require('quasar/wrappers');
 
 module.exports = configure(function (ctx) {
@@ -20,6 +20,8 @@ module.exports = configure(function (ctx) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
+      //'firebase',
+      'firebaseConnection',
     ],
 
     // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -60,7 +62,9 @@ module.exports = configure(function (ctx) {
 
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
-
+      env: {
+        QENV: enviromentConfiguration(process.env.QENV)
+      },
       // https://v2.quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpack (/* chain */) {

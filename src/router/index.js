@@ -1,3 +1,6 @@
+import fb from '../services/firebase'
+//import { Notify } from 'quasar'
+import store from '../store'
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
@@ -24,6 +27,18 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
+  })
+
+  Router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (!fb.auth().currentUser) {
+        next('/login')
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
   })
 
   return Router

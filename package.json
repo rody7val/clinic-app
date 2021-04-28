@@ -6,15 +6,20 @@
   "author": "rody7val <rod7val@gmail.com>",
   "private": true,
   "scripts": {
+    "build": "cross-env QENV=STAGE quasar build",
+    "dev": "cross-env QENV=DEV quasar dev",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
+    "firebase": "^8.4.2",
     "quasar": "^2.0.0-beta.1"
   },
   "devDependencies": {
-    "@quasar/app": "^3.0.0-beta.1"
+    "@quasar/app": "^3.0.0-beta.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

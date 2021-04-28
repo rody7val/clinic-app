@@ -1,13 +1,13 @@
 <template>
   <q-page class="flex flex-center">
-    PANEL DE CONTROL
+    <h6>PANEL DE CONTROL</h6>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+//{{$store.state.auth.isAuthenticated}}
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
 
-export default defineComponent({
-  name: 'PageDashboard'
-})
+export default {}
 </script>

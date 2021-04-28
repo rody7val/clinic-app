@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" class="bg-grey-2">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -15,7 +15,46 @@
           clinic-app
         </q-toolbar-title>
 
-        <div>ACCEDER</div>
+        <!--auth signin-->
+        <q-btn v-if="!$store.state.auth.isAuthenticated"
+          @click.prevent="signIn"
+          color="white"
+          text-color="primary"
+          icon="person"
+          label="ACCEDER" />
+
+        <!--auth menu-->
+        <q-btn-dropdown
+          v-else
+          dense
+          color="primary"
+        >
+          <template v-slot:label>
+            <q-avatar size="sm">
+              <img :src="$store.state.auth.user.photoURL">
+            </q-avatar>
+          </template>
+
+          <div class="row no-wrap q-pa-md">
+            <div class="column items-center">
+              <q-avatar size="72px">
+                <img :src="$store.state.auth.user.photoURL">
+              </q-avatar>
+
+              <div class="text-subtitle1 q-mt-md q-mb-xs">{{$store.state.auth.user.displayName}}</div>
+
+              <q-btn
+                @click.prevent="signOut"
+                color="primary"
+                label="SALIR"
+                push
+                size="sm"
+                v-close-popup
+              />
+            </div>
+          </div>
+        </q-btn-dropdown>
+
       </q-toolbar>
     </q-header>
 
@@ -25,14 +64,24 @@
       draggable="false"
       class="bg-grey-1"
     >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Menu
-        </q-item-label>
+      <q-item-section>
+        <img
+          class="shadow-logo img-menu q-mx-auto q-my-sm"
+          src="~assets/quasar-logo-full.svg"
+        />
 
+        <q-toolbar-title class="text-center">
+          clinic-app
+        </q-toolbar-title>
+
+        <q-item-label class="text-center text-weight-light q-mb-md">
+          Servicios web
+        </q-item-label>
+      </q-item-section>
+
+      <hr>
+
+      <q-list>
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"
@@ -49,48 +98,80 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
-
-const linksList = [
-  {
-    title: 'Dashboard',
-    caption: 'Panel de control',
-    icon: 'dashboard',
-    link: '/'
-  },
-  {
-    title: 'Clinica',
-    caption: 'Historia clinica',
-    icon: 'local_hospital',
-    link: '/clinic'
-  },
-  {
-    title: 'Tienda',
-    caption: 'Control de stock',
-    icon: 'storefront',
-    link: '/stock'
-  },
-  {
-    title: 'Calendario',
-    caption: 'Agenda de turnos',
-    icon: 'event',
-    link: '/calendar'
-  }
-];
-
 import { defineComponent, ref } from 'vue'
-
+import firebase from 'firebase'
+//import { ref, onMounted, onBeforeUnmount } from 'vue'
+//import { useRouter, useRoute } from 'vue-router'
+//import { useStore } from 'vuex'
 export default defineComponent({
   name: 'MainLayout',
-
   components: {
     EssentialLink
   },
-
-  setup () {
+  setup() {
     const leftDrawerOpen = ref(false)
+    const essentialLinks = ref([
+      {
+        title: 'Home',
+        caption: 'Página web',
+        icon: 'home',
+        link: '/',
+        exact: true,
+        public: true
+      },
+      {
+        title: 'Dashboard',
+        caption: 'Panel de control',
+        icon: 'dashboard',
+        link: '/dash',
+        public: false
+      },
+      {
+        title: 'Clinica',
+        caption: 'Historia clinica',
+        icon: 'local_hospital',
+        link: '/clinic',
+        public: false
+      },
+      {
+        title: 'Tienda',
+        caption: 'Control de stock',
+        icon: 'storefront',
+        link: '/stock',
+        public: false
+      },
+      {
+        title: 'Calendario',
+        caption: 'Agenda de turnos',
+        icon: 'event',
+        link: '/calendar',
+        public: false
+      },
+    ])
+
+    const signIn = () => {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithPopup(provider).then(result => {
+        console.log('signIn!', result)
+        //useRouter.push({ path: '/dash' })
+      }).catch(error => {
+        alert(error)
+      })
+    }
+
+    const signOut = () => {
+      firebase.auth().signOut().then(result => {
+        console.log('signOut!', result)
+        //this.$router.replace('/')
+      }).catch(error => {
+        alert(error)
+      })
+    }
 
     return {
-      essentialLinks: linksList,
+      signIn,
+      signOut,
+      essentialLinks,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
@@ -99,3 +180,13 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.img-menu{
+  height: 120px
+}
+.shadow-logo{
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgb(0 0 0 / 20%), 0 0px 10px rgb(0 0 0 / 24%);
+}
+</style>

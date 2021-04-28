@@ -3,6 +3,7 @@
     clickable
     tag="a"
     :to="link"
+    :exact="exact"
   >
     <q-item-section
       v-if="icon"
@@ -18,17 +19,26 @@
       </q-item-label>
     </q-item-section>
   </q-item>
+  <hr>      
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'EssentialLink',
+//<q-badge
+//  dense
+//  rounded
+//  :color="public ? 'primary' : 'secondary'"
+//  :label="public ? 'public' : 'admin'"
+///>
+export default {
   props: {
     title: {
       type: String,
       required: true
+    },
+
+    exact: {
+      type: Boolean,
+      default: true
     },
 
     caption: {
@@ -44,7 +54,12 @@ export default defineComponent({
     icon: {
       type: String,
       default: ''
+    },
+
+    public: {
+      type: Boolean,
+      default: false
     }
   }
-})
+}
 </script>

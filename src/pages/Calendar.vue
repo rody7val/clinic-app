@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    AGENDA DE TURNOS
+	<h6>AGENDA DE TURNOS</h6>
   </q-page>
 </template>
 
