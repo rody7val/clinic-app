@@ -30,6 +30,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next) => {
+
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (!fb.auth().currentUser) {
         next('/login')

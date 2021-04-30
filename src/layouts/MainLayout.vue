@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          clinic-app
+          {{$store.state.admin.title}}
         </q-toolbar-title>
 
         <!--auth signin-->
@@ -71,11 +71,11 @@
         />
 
         <q-toolbar-title class="text-center">
-          clinic-app
+          {{$store.state.admin.title}}
         </q-toolbar-title>
 
         <q-item-label class="text-center text-weight-light q-mb-md">
-          Servicios web
+          {{$store.state.admin.subtitle}}
         </q-item-label>
       </q-item-section>
 
@@ -97,13 +97,14 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
+import EssentialLink from '../components/EssentialLink.vue'
 import firebase from 'firebase'
+//import { signIn, signOut } from '../services/firebase'
 //import { ref, onMounted, onBeforeUnmount } from 'vue'
 //import { useRouter, useRoute } from 'vue-router'
 //import { useStore } from 'vuex'
-export default defineComponent({
+export default {
   name: 'MainLayout',
   components: {
     EssentialLink
@@ -158,7 +159,7 @@ export default defineComponent({
         alert(error)
       })
     }
-
+    
     const signOut = () => {
       firebase.auth().signOut().then(result => {
         console.log('signOut!', result)
@@ -178,7 +179,7 @@ export default defineComponent({
       }
     }
   }
-})
+}
 </script>
 
 <style>

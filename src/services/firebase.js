@@ -13,25 +13,22 @@ const getAuth = () => {
   return firebase.auth
 }
 
-const signOut = () => {
-  return auth().signOut()
-}
-
 const isAuthenticated = (store) => {
   return store.state.auth.isAuthenticated
 }
 
 const handleOnAuthStateChanged = async (router, store, user) => {
   const initialAuthState = isAuthenticated(store)
-  if (user && initialAuthState) {
-    console.log("go to dash")
-    //router.push({ path: '/dash' })
-  }
   // Save to the store
   store.commit('auth/setAuthState', {
     isAuthenticated: user !== null,
     user: user
   })
+
+  if (user && initialAuthState) {
+    console.log("go to dash")
+    router.push({ path: '/dash' })
+  }
 
   // If the user loses authentication route
   // them to the login page
@@ -62,8 +59,8 @@ const ensureAuthIsInitialized = async (store) => {
 
 export default {
 	auth,
+  getAuth,
 	init,
-	signOut,
 	isAuthenticated,
 	handleOnAuthStateChanged,
 	ensureAuthIsInitialized

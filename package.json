@@ -14,7 +14,8 @@
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "firebase": "^8.4.2",
-    "quasar": "^2.0.0-beta.1"
+    "quasar": "^2.0.0-beta.1",
+    "v-viewer": "^1.5.1"
   },
   "devDependencies": {
     "@quasar/app": "^3.0.0-beta.1",

@@ -1,130 +1,51 @@
 <template>
-  <q-page class="q-pa-md q-gutter-sm">
-    <q-card class="q-pa-sm" flat bordered >
-      <q-card-section>
-        <div class="row">
-          <div class="col-md-8 col-sm-8 col-xs-12 order-2 order-sm-1 mb-5">
-            <h1 class="text-h5">
-              Control de stock
-              <br>
-              <q-badge rounded color="primary" label="Admin" />
-            </h1>
-
-            <p class="text-weight-light">
-              Casos de uso del sistema. A continuación un listado de los campos requeridos para cada uno.
-            </p>
-
-            <h2 class="text-h6">
-              Crear Producto
-            </h2>
-            <ul class="q-ml-sm q-pl-sm">
-              <li>
-                <p>
-                  NOMBRE
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  PRECIO
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  CANTIDAD
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  IMAGEN
-                  <q-badge rounded color="green-4" label="opcional" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  VENCIMIENTO
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-            </ul>
-
-            <h2 class="text-h6">
-              Crear Proveedor
-            </h2>
-            <ul class="q-ml-sm q-pl-sm">
-              <li>
-                <p>
-                  RAZON SOCIAL
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  TELEFONO
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  CUIT
-                  <q-badge rounded color="red-3" label="requerido" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  EMAIL
-                  <q-badge rounded color="green-4" label="opcional" />
-                </p>
-              </li>
-              <li>
-                <p>
-                  DIRECCIÓN
-                  <q-badge rounded color="green-4" label="opcional" />
-                </p>
-              </li>
-            </ul>
-
-            <h2 class="text-h6">
-              Crear Movimiento (compra)
-            </h2>
-            <ul class="q-ml-sm q-pl-sm">
-              <li>
-                FECHA
-                <q-badge rounded color="red-3" label="requerido" />
-                <q-badge rounded color="blue-3" label="automatico" />
-              </li>
-              <li>
-                TIPO: compra
-                <q-badge rounded color="red-3" label="requerido" />
-                <q-badge rounded color="blue-3" label="automatico" />
-              </li>
-              <li>
-                TIPO_2: (servicio ó producto)
-                <q-badge rounded color="red-3" label="requerido" />
-              </li>
-              <li>
-                ITEMS: Carga un arreglo de cada productos o servicio vendido al paciente. Seria como el carrito de compras que describe el precio y cantidad de cada uno.
-                <q-badge rounded color="red-3" label="requerido" />
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-md-4 col-sm-4 col-xs-12 order-1 order-sm-2">
-            <q-img
-              class="col-5"
-              src="~assets/stock.jpeg"
-            />
-          </div>
-        </div>
-      </q-card-section>
-    </q-card>
-  </q-page>
+  <q-splitter
+    v-model="splitterModel"
+    horizontal
+  >
+    <template v-slot:before>
+    <q-tabs
+      v-model="tab"
+      inline-label
+      align="left"
+      dense
+      class="bg-primary text-white shadow-2"
+    >
+      <q-tab name="preview" icon="visibility" label="vista previa" />
+      <q-tab name="develop" icon="code" label="Desarrollo" />
+    </q-tabs>
+    </template>
+    <template v-slot:after>
+      <q-tab-panels
+        v-model="tab"
+        animated
+        swipeable
+        transition-prev="jump-up"
+        transition-next="jump-up"
+      >
+        <q-tab-panel name="develop">
+          <Develop />
+        </q-tab-panel>
+        <q-tab-panel name="preview">
+          <Preview />
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
+  </q-splitter>
 </template>
 
 <script>
+import { ref } from 'vue'
+import Develop from '../components/stock/Develop.vue'
+import Preview from '../components/stock/Preview.vue'
+
 export default {
-  name: 'PageStock'
+  components: { Develop, Preview },
+  setup () {
+    return {
+      splitterModel: ref(50), // start at 50%
+      tab: ref('preview')
+    }
+  }
 }
 </script>
